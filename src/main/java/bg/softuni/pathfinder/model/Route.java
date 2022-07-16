@@ -115,4 +115,12 @@ public class Route {
     public void setCategories(Set<Category> categories) {
         this.categories = categories;
     }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

@@ -5,6 +5,8 @@ import bg.softuni.pathfinder.model.dto.UserRegistrationDTO;
 import bg.softuni.pathfinder.repository.UserRepository;
 import org.hibernate.usertype.UserVersionType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -14,11 +16,12 @@ public class AuthService {
 
     private UserRepository userRepository;
 
-    @Autowired
-    public AuthService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private PasswordEncoder passwordEncoder;
 
+    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public void register(UserRegistrationDTO registrationDTO) {
         if (!registrationDTO.getPassword().equals(registrationDTO.getConfirmPassword())) {
@@ -33,12 +36,17 @@ public class AuthService {
 
         User user = new User(
             registrationDTO.getUsername(),
-            registrationDTO.getPassword(),
+            passwordEncoder.encode(registrationDTO.getPassword()),
             registrationDTO.getEmail(),
             registrationDTO.getFullname(),
             registrationDTO.getAge()
         );
 
         this.userRepository.save(user);
+    }
+
+    public User getUser(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(username + " was not found!"));
     }
 }

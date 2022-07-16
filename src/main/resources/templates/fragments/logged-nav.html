@@ -4,13 +4,17 @@
             <a href="/static">Add new route</a>
         </li>
         <li>
-            <a href="/static">Profile</a>
+            <a href="/users/profile">Profile</a>
         </li>
-        <li>
+        <li sec:authorize="hasRole('ADMIN')">
             <a href="/static">Admin</a>
         </li>
         <li>
-            <a href="/static">Logout</a>
+            <form action="/users/logout" method="post">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                <button type="submit">Logout</button>
+            </form>
+<!--            <a href="/users/logout">Logout</a>-->
         </li>
     </ul>
 </nav>

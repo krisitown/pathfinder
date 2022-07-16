@@ -10,17 +10,17 @@
     <div class="container mt-5">
         <div class="row d-flex justify-content-center">
             <div class="col-md-7">
-                <div class="profile-card p-3 py-4">
+                <div class="profile-card p-3 py-4" th:object="${user}">
                     <div class="text-center"><img src="/images/profile.jpg" width="100" class="rounded-circle"></div>
                     <div class="text-center mt-3">
 
-                        <span class="bg-secondary p-1 px-4 rounded text-white">Pro</span>
-                        <h5 class="mt-4 mb-0">Full name</h5>
+                        <span class="bg-secondary p-1 px-4 rounded text-white" th:text="*{level}">Pro</span>
+                        <h5 class="mt-4 mb-0" th:text="*{fullName}"></h5>
                         <span>UI/UX Designer</span>
-                        <h5 class="mt-2 mb-0">Username</h5>
+                        <h5 class="mt-2 mb-0" th:text="*{username}">Username</h5>
                         <span>UI/UX Designer</span>
-                        <h5 class="mt-2 mb-0">Age</h5>
-                        <span>33</span>
+                        <h5 class="mt-2 mb-0" th:text="*{age}">Age</h5>
+                        <span th:text="*{age}">33</span>
 
                         <div class="px-4 mt-5">
                             <p class="fonts">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim et nostrum

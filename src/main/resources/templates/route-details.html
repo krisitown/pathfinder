@@ -7,7 +7,7 @@
 <div class="wrapper">
     <header th:replace="fragments/header"></header>
 
-    <input type="hidden" name="routeId" id="routeId">
+    <input type="hidden" th:value="${route.routeId}" name="routeId" id="routeId">
     <div th:object="${route}" class="details-main">
         <section class="route-info text-center">
             <h4 th:text="*{name}" id="track-name"></h4>
@@ -61,7 +61,7 @@
             <div>
                 <!-- Comments submission -->
                 <form id="commentForm" method="POST"
-                      action="/">
+                      th:action="@{/api/{id}/comments(id=${route.routeId})}">
                     <div class="form-group">
                         <h4>Leave a comment</h4>
                         <label for="message">Message</label>
@@ -97,8 +97,8 @@
     </div>
     <!-- Scripts: track and comments
     <script th:src="@{/js/track.js}"></script>
-    <script th:src="@{/js/comments.js}"></script>
-    -->
+    --><script th:src="@{/js/comments.js}"></script>
+
 </div>
 <footer th:replace="fragments/footer"></footer>
 </body>

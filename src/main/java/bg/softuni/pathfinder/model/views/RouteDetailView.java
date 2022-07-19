@@ -4,17 +4,8 @@ import java.util.List;
 import java.util.Set;
 
 public class RouteDetailView {
-    public RouteDetailView(String gpxCoordinates, String level, String name, String description,
-                           String authorName, String videoUrl, List<String> pictures) {
-        this.gpxCoordinates = gpxCoordinates;
-        this.level = level;
-        this.name = name;
-        this.description = description;
-        this.authorName = authorName;
-        this.videoUrl = videoUrl;
-        this.pictures = pictures;
-    }
 
+    private Long routeId;
     private String gpxCoordinates;
 
     private String level;
@@ -28,6 +19,18 @@ public class RouteDetailView {
     private String videoUrl;
 
     private List<String> pictures;
+
+    public RouteDetailView(Long routeId, String gpxCoordinates, String level, String name, String description,
+                           String authorName, String videoUrl, List<String> pictures) {
+        this.routeId = routeId;
+        this.gpxCoordinates = gpxCoordinates;
+        this.level = level;
+        this.name = name;
+        this.description = description;
+        this.authorName = authorName;
+        this.videoUrl = videoUrl;
+        this.pictures = pictures;
+    }
 
     public String getGpxCoordinates() {
         return gpxCoordinates;
@@ -83,5 +86,13 @@ public class RouteDetailView {
 
     public void setPictures(List<String> pictures) {
         this.pictures = pictures;
+    }
+
+    public Long getRouteId() {
+        return routeId;
+    }
+
+    public void setRouteId(Long routeId) {
+        this.routeId = routeId;
     }
 }

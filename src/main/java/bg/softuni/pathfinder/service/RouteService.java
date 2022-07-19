@@ -37,6 +37,7 @@ public class RouteService {
     public RouteDetailView getRouteDetails(Long id) {
         return routeRepository.findById(id)
                 .map(route -> new RouteDetailView(
+                        route.getId(),
                         route.getGpxCoordinates(),
                         route.getLevel().name(),
                         route.getName(),

@@ -3,6 +3,9 @@ package bg.softuni.pathfinder.model.dto;
 public class CommentMessageDto {
     private String message;
 
+    public CommentMessageDto() {
+    }
+
     public CommentMessageDto(String message) {
         this.message = message;
     }

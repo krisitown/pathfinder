@@ -43,7 +43,7 @@ public class PathfinderSecurityConfiguration {
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .defaultSuccessUrl("/")
-                .failureForwardUrl("/users/login?error=true")
+                .failureForwardUrl("/users/login?error.html=true")
                 .and()
                 .logout()
                 .logoutUrl("/users/logout")

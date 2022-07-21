@@ -19,7 +19,7 @@ public class IpBlackListInterceptor implements HandlerInterceptor {
         String ipAddress = request.getRemoteAddr();
         System.out.println(ipAddress);
         if(blacklistedIpAddresses.contains(ipAddress)) {
-            response.sendRedirect("/error");
+            response.sendRedirect("error");
         }
         return true;
     }

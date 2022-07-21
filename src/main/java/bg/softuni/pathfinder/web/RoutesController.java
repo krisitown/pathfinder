@@ -3,9 +3,11 @@ package bg.softuni.pathfinder.web;
 import bg.softuni.pathfinder.model.Route;
 import bg.softuni.pathfinder.model.views.RouteDetailView;
 import bg.softuni.pathfinder.model.views.RouteIndexView;
+import bg.softuni.pathfinder.service.RouteNotFoundException;
 import bg.softuni.pathfinder.service.RouteService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,5 +37,10 @@ public class RoutesController {
         model.addAttribute("route", route);
 
         return "route-details";
+    }
+
+    @ExceptionHandler({RouteNotFoundException.class})
+    public String notFoundRoute() {
+        return "error";
     }
 }

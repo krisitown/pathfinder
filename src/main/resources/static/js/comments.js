@@ -1,10 +1,17 @@
 const routeId = document.getElementById('routeId').value
+const commentCntr = document.getElementById('commentCtnr')
 
 fetch(`http://localhost:8080/api/${routeId}/comments`)
-    .then((res) => {
-        let response = res.json()
-        for(let comment in response) {
+    .then(res => res.json())
+    .then((response) => {
+        for(let comment of response) {
             console.log(comment)
+            let commentObject = '<div>\n'
+            commentObject += `<h4>${comment.authorName}</h4>\n`
+            commentObject += `<p>${comment.message}</p>\n`
+            commentObject += '</div>\n'
+
+            commentCntr.innerHTML += commentObject
         }
     });
 

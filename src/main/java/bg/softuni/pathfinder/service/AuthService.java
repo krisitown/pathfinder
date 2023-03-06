@@ -5,6 +5,9 @@ import bg.softuni.pathfinder.model.dto.UserRegistrationDTO;
 import bg.softuni.pathfinder.repository.UserRepository;
 import org.hibernate.usertype.UserVersionType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -13,12 +16,13 @@ import java.util.Optional;
 public class AuthService {
 
     private UserRepository userRepository;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public AuthService(UserRepository userRepository) {
+    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
-
 
     public void register(UserRegistrationDTO registrationDTO) {
         if (!registrationDTO.getPassword().equals(registrationDTO.getConfirmPassword())) {
@@ -31,14 +35,25 @@ public class AuthService {
             throw new RuntimeException("email.used");
         }
 
+        Optional<User> byUsername = this.userRepository.findByUsername(registrationDTO.getUsername());
+
+        if (byUsername.isPresent()) {
+            throw new RuntimeException("username.used");
+        }
+
         User user = new User(
             registrationDTO.getUsername(),
-            registrationDTO.getPassword(),
+            passwordEncoder.encode(registrationDTO.getPassword()),
             registrationDTO.getEmail(),
             registrationDTO.getFullname(),
             registrationDTO.getAge()
         );
 
         this.userRepository.save(user);
+    }
+
+    public User getUserByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found!"));
     }
 }

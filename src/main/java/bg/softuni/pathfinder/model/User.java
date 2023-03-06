@@ -95,4 +95,12 @@ public class User implements Serializable {
     public void setLevel(Level level) {
         this.level = level;
     }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public int getAge() {
+        return age;
+    }
 }

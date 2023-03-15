@@ -11,9 +11,12 @@
 <!-- Top Container -->
 <div class="row justify-content-center ">
     <form id="add-route-form" class="w-50 rounded text-white mt-5"
-          action="/"
-          method="/" enctype="multipart/form-data">
-
+          action="/routes/new"
+          method="POST" enctype="multipart/form-data">
+        <input
+                type="hidden"
+                th:name="${_csrf.parameterName}"
+                th:value="${_csrf.token}" />
         <h3 class="border-left border-light pl-2">Add a new route</h3>
         <div>
             <div class="form-group">
@@ -50,24 +53,26 @@
 
         <div>
             <div class="form-group">
-                <label for="inputGpx" class="col-form-label ">GPX Coordinates</label>
+                <label for="image" class="col-form-label ">Image</label>
             </div>
             <div class="form-group">
-                <input type="file" name="gpxCoordinates"
+                <input type="file" name="image"
                        required
-                       id="inputGpx"
+                       id="image"
                        class="form-control-file"
-                       aria-describedby="inputGpxError">
+                       aria-describedby="image">
                 <small id="inputGpxError"
-                       class="invalid-feedback  form-text bg-danger rounded">Must be valid GPX Coordinates</small>
+                       class="invalid-feedback  form-text bg-danger rounded">Must be valid image.</small>
             </div>
         </div>
         <div>
             <div class="form-group">
                 <label for="level">Level</label>
                 <select id="level" class="custom-select">
-                    <option value="" selected>Select level</option>
-                    <option value="1" text="ADVANCED">Select level</option>
+<!--                    BEGINNER, INTERMEDIATE, ADVANCED-->
+                    <option value="BEGINNER" selected>BEGINNER</option>
+                    <option value="INTERMEDIATE">INTERMEDIATE</option>
+                    <option value="ADVANCED">ADVANCED</option>
                 </select>
             </div>
         </div>

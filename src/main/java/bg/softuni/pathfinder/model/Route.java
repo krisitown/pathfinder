@@ -25,7 +25,6 @@ public class Route {
     private String description;
 
     @ManyToOne
-    @MapsId("id")
     private User author;
 
     private String videoUrl;
@@ -33,7 +32,7 @@ public class Route {
     @OneToMany(targetEntity = Comment.class, mappedBy = "route", cascade = CascadeType.ALL)
     private Set<Comment> comments;
 
-    @OneToMany(mappedBy = "route", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "route", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Picture> pictures;
 
     @ManyToMany
@@ -114,5 +113,13 @@ public class Route {
 
     public void setCategories(Set<Category> categories) {
         this.categories = categories;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

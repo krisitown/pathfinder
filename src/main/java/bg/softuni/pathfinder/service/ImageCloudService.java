@@ -25,6 +25,7 @@ public class ImageCloudService {
 
     public String saveImage(MultipartFile multipartFile) {
         String imageId = UUID.randomUUID().toString();
+
         Map params = ObjectUtils.asMap(
                 "public_id", imageId,
                 "overwrite", true,

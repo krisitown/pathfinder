@@ -49,7 +49,11 @@ public class CommentRestController {
 
     @GetMapping("/api/{routeId}/comments/{commentId}")
     private ResponseEntity<CommentView> getComment(@PathVariable("commentId") Long commentId) {
-        return ResponseEntity.ok(mapToCommentView(commentService.getComment(commentId)));
+        try {
+            return ResponseEntity.ok(mapToCommentView(commentService.getComment(commentId)));
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping(value = "/api/{routeId}/comments", consumes = "application/json", produces = "application/json")
@@ -69,13 +73,24 @@ public class CommentRestController {
     public ResponseEntity<CommentView> deleteComment(@PathVariable("commentId") Long commentId,
                                                      @AuthenticationPrincipal UserDetails principal) {
         User user = authService.getUserByUsername(principal.getUsername());
+        try {
+            return deleteCommentInternal(commentId, user);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    private ResponseEntity<CommentView> deleteCommentInternal(Long commentId, User user) {
         Comment comment = commentService.getComment(commentId);
 
-        if(user.getRoles().stream().anyMatch(r -> r.getName() == MODERATOR || r.getName() == ADMIN)
-            || user.getId() == comment.getAuthor().getId()) {
+        if(isAdminOrModerator(user) || user.getId() == comment.getAuthor().getId()) {
             Comment deleted = commentService.deleteComment(commentId);
             return ResponseEntity.ok(mapToCommentView(deleted));
         }
         return ResponseEntity.status(403).build();
+    }
+
+    private boolean isAdminOrModerator(User user) {
+        return user.getRoles().stream().anyMatch(r -> r.getName() == MODERATOR || r.getName() == ADMIN);
     }
 }

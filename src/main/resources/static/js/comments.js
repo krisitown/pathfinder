@@ -17,7 +17,11 @@ function addCommentAsHtml(comment) {
     commentHtml += '<h4>' + comment.authorName + '</h4>\n'
     commentHtml += '<p>' + comment.text + '</p>\n'
     commentHtml += '<span>' + comment.dateOfCreation + '</span>\n'
-    commentHtml += `<button class="btn btn-danger" onclick="deleteComment(${comment.id})">Delete</button>\n`
+
+    if(comment.canEdit) {
+        commentHtml += `<button class="btn btn-danger" onclick="deleteComment(${comment.id})">Delete</button>\n`
+    }
+    
     commentHtml += '</div>\n'
 
     commentSection.innerHTML += commentHtml
@@ -43,7 +47,6 @@ commentForm.addEventListener("submit", (event) => {
     event.preventDefault()
     
     let text = document.getElementById("message").value
-
 
     fetch(`${backendLocation}/api/${routeId}/comments`, {
         method: 'POST',

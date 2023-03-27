@@ -17,6 +17,7 @@ import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static bg.softuni.pathfinder.model.enums.UserRoles.ADMIN;
@@ -34,17 +35,35 @@ public class CommentRestController {
     }
 
     @GetMapping("/api/{routeId}/comments")
-    public ResponseEntity<List<CommentView>> getCommentsRoutes(@PathVariable("routeId") Long routeId) {
+    public ResponseEntity<List<CommentView>> getCommentsRoutes(@PathVariable("routeId") Long routeId, Principal principal) {
+        User user = null;
+        try {
+             user = authService.getUserByUsername(principal.getName());
+        } catch (RuntimeException e) {
+            //IGNORE
+        }
         var comments = commentService.getCommentsByRoute(routeId)
-                .stream().map(c -> mapToCommentView(c))
+                .stream().map(createCommentViewForUser(principal, user))
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(comments);
     }
 
+    private Function<Comment, CommentView> createCommentViewForUser(Principal principal, User user) {
+        return c -> {
+            boolean canEdit = principal != null &&
+                    (isAdminOrModerator(user) || user.getId() == c.getAuthor().getId());
+            return mapToCommentView(c, canEdit);
+        };
+    }
+
     private CommentView mapToCommentView(Comment c) {
+        return mapToCommentView(c, false);
+    }
+
+    private CommentView mapToCommentView(Comment c, boolean canEdit) {
         return new CommentView(c.getId(), c.getText(), c.getAuthor().getFullName(),
-                c.getCreated().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm")));
+                c.getCreated().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm")), canEdit);
     }
 
     @GetMapping("/api/{routeId}/comments/{commentId}")

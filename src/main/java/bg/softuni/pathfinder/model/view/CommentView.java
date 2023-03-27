@@ -6,11 +6,14 @@ public class CommentView {
     private String authorName;
     private String dateOfCreation;
 
-    public CommentView(Long id, String text, String authorName, String dateOfCreation) {
+    private boolean canEdit;
+
+    public CommentView(Long id, String text, String authorName, String dateOfCreation, boolean canEdit) {
         this.id = id;
         this.text = text;
         this.authorName = authorName;
         this.dateOfCreation = dateOfCreation;
+        this.canEdit = canEdit;
     }
 
     public String getText() {
@@ -43,5 +46,13 @@ public class CommentView {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public boolean isCanEdit() {
+        return canEdit;
+    }
+
+    public void setCanEdit(boolean canEdit) {
+        this.canEdit = canEdit;
     }
 }
